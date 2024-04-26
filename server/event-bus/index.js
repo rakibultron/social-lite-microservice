@@ -11,11 +11,11 @@ app.post("/events", async (req, res) => {
     console.log(req.body);
     const event = req.body;
     //   Posts
-    await axios.post("http://localhost:5000/events", event);
+    await axios.post("http://posts-cluster-ip-srv:5000/events", event);
     //   Comments
-    await axios.post("http://localhost:5001/events", event);
+    // await axios.post("http://localhost:5001/events", event);
     //   Query
-    await axios.post("http://localhost:6001/events", event);
+    // await axios.post("http://localhost:6001/events", event);
 
     res.json("Event triggerd");
   } catch (error) {

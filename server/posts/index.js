@@ -1,10 +1,12 @@
 const express = require("express");
 const ShortUniqueId = require("short-unique-id");
 const axios = require("axios");
+const cors = require("cors");
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 const posts = [];
 
 app.get("/posts", (req, res) => {
@@ -22,7 +24,7 @@ app.post("/posts", async (req, res) => {
     posts.push({ id, title });
 
     await axios.post(
-      "http://localhost:6000/events",
+      "http://event-srv:6000/events",
 
       {
         type: "postCreated",
