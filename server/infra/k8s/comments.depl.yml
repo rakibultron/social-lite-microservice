@@ -1,23 +1,3 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: comments
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: comments
-#   template:
-#     metadata:
-#       labels:
-#         app: comments
-#     spec:
-#       containers:
-#         - name: comments
-#           image: mdrakibul/comments
-#       ports:
-#         - containerPort: 5001
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,13 +17,20 @@ spec:
       containers:
         - name: comments
           image: mdrakibul/comments:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
           ports:
             - containerPort: 5001
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: comments-srv
+  name: comments-srv-cluster-ip
 spec:
   type: ClusterIP
   selector:
@@ -51,5 +38,5 @@ spec:
   ports:
     - name: comments
       protocol: TCP
-      port: 5002
-      targetPort: 5002
+      port: 5001
+      targetPort: 5001

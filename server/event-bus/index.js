@@ -13,9 +13,9 @@ app.post("/events", async (req, res) => {
     //   Posts
     await axios.post("http://posts-cluster-ip-srv:5000/events", event);
     //   Comments
-    // await axios.post("http://localhost:5001/events", event);
+    await axios.post("http://comments-srv-cluster-ip:5001/events", event);
     //   Query
-    // await axios.post("http://localhost:6001/events", event);
+    await axios.post("http://query-cluster-ip-srv:6001/events", event);
 
     res.json("Event triggerd");
   } catch (error) {

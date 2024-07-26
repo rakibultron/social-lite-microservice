@@ -1,0 +1,50 @@
+apiVersion: skaffold/v4beta10
+kind: Config
+metadata:
+  name: social-lite-microservice
+build:
+  artifacts:
+    - image: comments
+      context: client
+      buildpacks:
+        builder: gcr.io/buildpacks/builder:v1
+    - image: mdrakibul/comments
+      context: hello-nodejs-k8s
+      buildpacks:
+        builder: gcr.io/buildpacks/builder:v1
+    - image: mdrakibul/dockerized-node.js
+      context: server/comments
+      buildpacks:
+        builder: gcr.io/buildpacks/builder:v1
+    - image: mdrakibul/event-bus
+      context: server/event-bus
+      buildpacks:
+        builder: gcr.io/buildpacks/builder:v1
+    - image: mdrakibul/hello-nodejs
+      context: server/posts
+      buildpacks:
+        builder: gcr.io/buildpacks/builder:v1
+    - image: mdrakibul/posts
+      context: server/query
+      buildpacks:
+        builder: gcr.io/buildpacks/builder:v1
+    - image: mdrakibul/query
+      context: hello-nodejs-k8s
+      docker:
+        dockerfile: Dockerfile
+    - image: nginx
+      context: server/comments
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - hello-nodejs-k8s/infra/k8s/event-bus.depl.yml
+    - hello-nodejs-k8s/infra/k8s/hellonodejs.depl.yml
+    - hello-nodejs-k8s/infra/k8s/hellonodejs.srv.yml
+    - server/infra/k8s/comments.depl.yml
+    - server/infra/k8s/comments.yml
+    - server/infra/k8s/event-bus.depl.yml
+    - server/infra/k8s/hellonode.yml
+    - server/infra/k8s/nginx.yml
+    - server/infra/k8s/posts.depl.yml
+    - server/infra/k8s/query.depl.yml
